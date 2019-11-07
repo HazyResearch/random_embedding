@@ -11,7 +11,9 @@ In random_embeddings.py, there is module called ```RandomEmbedding```, which is 
 This module is meant to serve as a drop-in replacement for ```torch.nn.Embedding``` in the case where you want to use *fixed* random embeddings during the training of a downstream model.
 Below is an example of how to create a ```RandomEmbedding``` module for an embedding matrix of size n by d, where the average norm of an embedding vector is equal to c (c can be chosen to match the average embedding vector norm of the pre-trained embedding matrix being replaced); we additionally show how to pass input to this embedding module:
 ```
+import torch
 from random_embeddings import RandomEmbedding
+
 n,d,c = 100,10,1
 emb = RandomEmbedding(n,d,avg_embedding_norm=c)
 # Extract the word embeddings for words corresponding to indices 0, 1, and 2.
