@@ -1,18 +1,32 @@
-# Random Embeddings Repository
-This repository is for generating random circulant embedding matrices, which can be used in the training of PyTorch NLP models.
-To use the code, simply clone the repo, and import the random_embeddings module.
+# Random Embedding Repository
+
+This repository is for generating random circulant embedding matrices, which can
+be used in the training of PyTorch models.
+To use the code, simply clone the repo, and import the random_embedding module.
+
 ```
 git clone https://github.com/HazyResearch/random_embeddings.git
 cd random_embeddings
-# If the following code runs without throwing an error, the module is being successfully imported.
-python -c "import random_embeddings"
+# If the following code runs without throwing an error, the module is being
+# successfully imported.
+python -c "import random_embedding"
+# To run our unit tests locally, execute the following command:
+python -m unittest random_embedding_test.RandomEmbeddingTest
 ```
-In random_embeddings.py, there is module called ```RandomEmbedding```, which is a subclass of ```torch.nn.Embedding```.
-This module is meant to serve as a drop-in replacement for ```torch.nn.Embedding``` in the case where you want to use *fixed* random embeddings during the training of a downstream model.
-Below is an example of how to create a ```RandomEmbedding``` module for an embedding matrix of size n by d, where the average norm of an embedding vector is equal to c (c can be chosen to match the average embedding vector norm of the pre-trained embedding matrix being replaced); we additionally show how to pass input to this embedding module:
+
+In random_embedding.py, there is a module called ```RandomEmbedding```, which is a
+subclass of ```torch.nn.Embedding```. This module is meant to serve as a drop-in
+replacement for ```torch.nn.Embedding``` in the case where you want to use
+*fixed* random embeddings during the training of a downstream model. Below is an
+example of how to create a ```RandomEmbedding``` module for an embedding matrix
+of size n-by-d, where the average norm of an embedding vector is equal to c (for
+example, c can be chosen to match the average embedding vector norm of the 
+pretrained embedding matrix being replaced); we additionally show how to pass
+input to this embedding module:
+
 ```
 import torch
-from random_embeddings import RandomEmbedding
+from random_embedding import RandomEmbedding
 
 n,d,c = 100,10,1
 emb = RandomEmbedding(n,d,avg_embedding_norm=c)
@@ -22,9 +36,27 @@ output = emb(word_indices)
 print(output.shape)
 # output shape will be 3 by 10
 ```
-The RandomEmbedding module creates the random circulant embedding weight matrix (with ```requires_grad=False```), by calling the ```create_random_circulant_embeddings``` function, which is also in random_embeddings.py.
-Note that the current implementation stores the entire circulant matrix as an n by d tensor, and so the memory footprint is the same as for an Embedding module of the same dimensions.
-We plan to implement a memory-efficient version of this module, so that only the first column of the circulant embedding matrix is stored.
 
-Our implementation is tested under Python 3.6 and PyTorch 1.0 (for our tests, see random_embeddings_test.py).
-The code has a dependency on scipy, because scipy.linalg.circulant is used to create the circulant embedding matrix.
+We have implemented the RandomEmbedding module in a memory-efficient manner,
+such that for a vocabulary of size n, only 33n bits are used (32n bits for a
+vector of n random floats parameterizing the circulant matrices, and an
+additional n bits for a boolean random vector of length n).  For details about
+exactly how we define the random circulant embeddings, please see our ACL paper
+which we cite below.
+
+Our implementation is tested under Python 3.6 and PyTorch 1.0 (for our tests,
+see random_embedding_test.py).
+
+## Citing this Repository
+
+If you use this repository for your research, please cite the following paper:
+
+```
+@inproceedings{arora20,
+  title     = {Contextual Embeddings: When Are They Worth It?},
+  author    = {Simran Arora and Avner May and Jian Zhang and Christopher Ré},
+  booktitle = {{ACL}},
+  publisher = {Association for Computational Linguistics},
+  year      = {2020}
+}
+```
