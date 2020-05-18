@@ -5,8 +5,8 @@ be used in the training of PyTorch models.
 To use the code, simply clone the repo, and import the random_embedding module.
 
 ```
-git clone https://github.com/HazyResearch/random_embeddings.git
-cd random_embeddings
+git clone https://github.com/HazyResearch/random_embedding.git
+cd random_embedding
 # If the following code runs without throwing an error, the module is being
 # successfully imported.
 python -c "import random_embedding"
