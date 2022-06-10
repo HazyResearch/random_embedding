@@ -52,7 +52,7 @@ see random_embedding_test.py).
 If you use this repository for your research, please cite the following paper:
 
 ```
-@inproceedings{arora20,
+@inproceedings{arora20contextual,
   title     = {Contextual Embeddings: When Are They Worth It?},
   author    = {Simran Arora and Avner May and Jian Zhang and Christopher Ré},
   booktitle = {{ACL}},
